@@ -1,6 +1,13 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 import { Product } from '../../products/entities';
 
+export interface Address {
+  street?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  country?: string;
+}
 
 @Entity('users')
 export class User {
@@ -21,6 +28,21 @@ export class User {
     @Column('text')
     fullName: string;
 
+    @Column('text', {
+        nullable: true
+    })
+    phone?: string;
+
+    @Column('text', {
+        nullable: true
+    })
+    avatarUrl?: string;
+    
+   @Column('jsonb', {
+        nullable: true
+    })
+    address?: Address;
+
     @Column('bool', {
         default: true
     })
@@ -36,12 +58,17 @@ export class User {
         () => Product,
         ( product ) => product.user
     )
-    product: Product;
+    product: Product[];
+
+    @CreateDateColumn({ type: 'timestamptz' })
+    createdAt: Date;
 
 
     @BeforeInsert()
     checkFieldsBeforeInsert() {
-        this.email = this.email.toLowerCase().trim();
+        if (this.email && typeof this.email === 'string') {
+            this.email = this.email.toLowerCase().trim();
+        }
     }
 
     @BeforeUpdate()

@@ -12,6 +12,7 @@ import { FilesModule } from './files/files.module';
 import { AuthModule } from './auth/auth.module';
 import { MessagesWsModule } from './messages-ws/messages-ws.module';
 import { CartModule } from './cart/cart.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { CartModule } from './cart/cart.module';
     AuthModule,
 
     MessagesWsModule,
+    UsersModule,
 
   ],
 })
